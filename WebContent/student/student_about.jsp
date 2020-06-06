@@ -9,7 +9,7 @@
 </head>
 <style type="text/css">
     body {
-        background:  #f8f6e9;
+        background: #f8f6e9;
     }
 </style>
 <body>
