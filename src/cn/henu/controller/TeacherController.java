@@ -1,11 +1,21 @@
 package cn.henu.controller;
 
+import java.io.*;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipOutputStream;
 
 import javax.annotation.Resource;
+import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import cn.henu.pojo.Answer;
+import cn.henu.util.ZipHelper;
+import org.apache.commons.compress.archivers.zip.ZipUtil;
+import org.apache.commons.io.FileUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -181,9 +191,6 @@ public class TeacherController {
         return "redirect:/login.jsp";
     }
 
-    /**
-     * 教师添加考试通知
-     */
     @RequestMapping("teacherInformation")
     public String addNotice(HttpServletRequest request, HttpSession session) {
         String info = request.getParameter("information");
@@ -191,5 +198,30 @@ public class TeacherController {
         return "redirect:/login.jsp";
     }
 
+    @RequestMapping("teacherDownload")
+    public String teacherDownload(String e_name, HttpServletRequest req, HttpServletResponse res, HttpSession session) {
+        String savePath = req.getServletContext().getRealPath("files/" + e_name);
+        String zipFilePath = req.getServletContext().getRealPath("files/" + e_name);
+        System.out.println("---试卷压缩包的保存路径为：" + savePath);
+        boolean flag = ZipHelper.toZip(savePath, zipFilePath, e_name);
+        if(flag) {
+            System.out.println("压缩成功!");
+        } else {
+            System.out.println("压缩失败!");
+        }
+        //浏览器下载zip文件
+        try{
+            ServletOutputStream os = res.getOutputStream();
+            File file = new File(req.getServletContext().getRealPath("files/" + e_name), e_name+".zip");
+            byte[] bytes = FileUtils.readFileToByteArray(file);
+            os.write(bytes);
+            os.flush();
+            os.close();
+        }catch (Exception e){
+            e.getMessage();
+            session.setAttribute("downloadTip", "<script>alert('当前没有已提交试卷，无法下载！');</script>");
+        }
+        return "redirect:/teacher/teacher_exam_after.jsp";
+    }
 }
 

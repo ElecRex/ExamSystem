@@ -28,7 +28,6 @@ public class StudentController {
 
     @RequestMapping("login/student")
     public String login(Student student, HttpServletRequest request, HttpSession session) {
-
         Student stu = studentServiceImpl.login(student);
 
         if (stu != null) { //获取并绑定学生ip地址
@@ -147,37 +146,15 @@ public class StudentController {
     public List<Student> getExamStudents(String e_name) {
         return studentServiceImpl.selAllStudents(e_name);
     }
-//	
-//	@RequestMapping("getAllStudents")
-//	@ResponseBody
-//	public List<Student> getAllStudents(HttpSession session){
-//		Object studentobj=session.getAttribute("allstudent");
-//		if (studentobj!=null) {
-//			return (List<Student>)studentobj;
-//		}
-//		Object obj=session.getAttribute("examStartName");
-//		String e_name="";
-//		if (obj!=null) {
-//			e_name=obj.toString();
-//			List<Student> students=studentServiceImpl.selAllStudents(e_name);
-//			session.setAttribute("allstudent", students);
-//			return studentServiceImpl.selAllStudents(e_name);
-//		}
-//		e_name=examServiceImpl.selStartExam().get(0).getE_name();
-//		session.setAttribute("examStartName", e_name);
-//		List<Student> students=studentServiceImpl.selAllStudents(e_name);
-//		session.setAttribute("allstudent", students);
-//		return students;
-//	}
 
     @RequestMapping("unbind")
     @ResponseBody
     public void unbind(String stu_id) {
         int index = studentServiceImpl.updUnBind(stu_id);
         if (index >= 1) {
-            System.out.println("IP解绑成功");
+            System.out.println("IP解绑成功！");
         } else {
-            System.out.println("IP解绑失败");
+            System.out.println("IP解绑失败！");
         }
     }
 
