@@ -32,9 +32,9 @@
 						<th class="col-md-12"  rowspan="1" style="text-align:center">通知内容</th>
 					<%
 							if(session.getAttribute("notice") != null){
-							    out.print("<th rowspan='1' style='text-align:center'>"+ session.getAttribute("notice") + "</th>");
+							    out.print("<tr><td>"+ session.getAttribute("notice") + "</td></tr>");
 							}
-					%>
+					%></tr>
 				</table>
 			</form>
 		</div>

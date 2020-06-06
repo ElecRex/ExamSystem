@@ -19,7 +19,7 @@
 	<div class="container">
 		<div class="alert navbar-inverse"
 			style="background-color: #eeeeee; margin-top: 20px">
-			<strong style="margin-left: 20px; font-size: 18px">当前考试:<c:if test="${examStartName==null }">当前没有开启的考试</c:if>${examStartName }</strong>
+			<strong style="margin-left: 20px; font-size: 18px">当前考试正在进行中</strong>
 			<strong style="margin-left: 20px; font-size: 18px">添加单个学生</strong>
 			<form class="form-inline" style="margin-left: 20px; margin-top: 5px;" onsubmit="return add()">
 				<div class="form-group">

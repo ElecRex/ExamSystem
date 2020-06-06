@@ -8,6 +8,12 @@
 </head>
 <body>
 <jsp:include page="teacher_index.jsp"></jsp:include>
+<%
+    if (session.getAttribute("downloadTip") != null) {
+        out.print(session.getAttribute("downloadTip"));
+        session.removeAttribute("downloadTip");
+    }
+%>
 <div class="container">
     <table class="table table-bordered" style="margin-top: 10px">
         <tr>
@@ -92,7 +98,7 @@
                 if (data[i].e_isend == 0 && data[i].e_isstart == 1)
                     result += "<a href='javascript:;' onclick='stopExam(" + '"' + data[i].e_name + '"' + ")' title='停止考试' class='btn btn-info'>停止考试</a>";
                 if (data[i].e_isend == 1 && data[i].e_clear == 0)
-                    result += "<a href='../examDownload?e_name=" + data[i].e_name + "'" + "title='下载考生答案' class='btn btn-info'>下载</a>&nbsp;&nbsp;<a href='javascript:;' onclick='clearExam(" + '"' + data[i].e_name + '"' + ")' title='清理考试' class='clear_btn btn btn-info'>清理考试</a>";
+                    result += "<a href='../teacherDownload?e_name=" + data[i].e_name + "'" + "title='下载考生答案' class='btn btn-info'>下载</a>&nbsp;&nbsp;<a href='javascript:;' onclick='clearExam(" + '"' + data[i].e_name + '"' + ")' title='清理考试' class='clear_btn btn btn-info'>清理考试</a>";
                 result += "</td>";
                 result += "</tr>";
             }
