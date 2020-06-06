@@ -5,6 +5,7 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import cn.henu.pojo.Answer;
 import org.springframework.web.multipart.MultipartFile;
 
 import cn.henu.pojo.Exam;
@@ -21,6 +22,8 @@ public interface ExamService {
 
 	public int updClearExam(String name);
 
+	public int delClearExam(String e_name);
+
 	public List<Exam> selStartExam();
 
 	public boolean savePager(MultipartFile multipartFile,HttpServletRequest req,HttpSession session);
@@ -34,4 +37,5 @@ public interface ExamService {
 	public String selFileByName(String e_name);
 
 	public String upSubmitStudent(String stu_id, String stu_exam);
+
 }

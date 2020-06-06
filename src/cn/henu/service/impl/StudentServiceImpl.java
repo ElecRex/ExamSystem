@@ -84,7 +84,7 @@ public class StudentServiceImpl implements StudentService {
     public int saveExcel(MultipartFile multipartFile, String e_name, HttpServletRequest req, HttpSession session) {
         String originalFileName = multipartFile.getOriginalFilename();
         File targetFilePath = null;
-        String path = req.getServletContext().getRealPath("files");
+        String path = req.getServletContext().getRealPath("files/studentExcel");
         targetFilePath = new File(path, originalFileName);
         if (!targetFilePath.exists()) {
             targetFilePath.getParentFile().mkdirs();

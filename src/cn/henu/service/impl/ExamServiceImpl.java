@@ -50,6 +50,11 @@ public class ExamServiceImpl implements ExamService {
     }
 
     @Override
+    public int delClearExam(String e_name) {
+        return examMapper.delClearExam(e_name);
+    }
+
+    @Override
     public List<Exam> selStartExam() {
         return examMapper.selStartExam();
     }
@@ -58,10 +63,14 @@ public class ExamServiceImpl implements ExamService {
     public boolean saveAnswer(MultipartFile multipartFile, HttpServletRequest req, HttpSession session) {
         String originalFileName = multipartFile.getOriginalFilename();
         File targetFilePath = null;
-        String path = req.getServletContext().getRealPath("files");
+
+        Object stu = session.getAttribute("student");
+        Student stuTmp = (Student) stu;
+
+        String path = req.getServletContext().getRealPath("files/" + stuTmp.getStu_exam());
         targetFilePath = new File(path, originalFileName);
         if (!targetFilePath.exists()) {
-            Object stu = session.getAttribute("student");
+//            Object stu = session.getAttribute("student");
             String stu_id = "", exam_name = "";
             if (stu != null) {
                 Student student = (Student) stu;
@@ -96,7 +105,7 @@ public class ExamServiceImpl implements ExamService {
     public boolean savePager(MultipartFile multipartFile, HttpServletRequest req, HttpSession session) {
         String originalFileName = multipartFile.getOriginalFilename();
         File targetFilePath = null;
-        String path = req.getServletContext().getRealPath("files");
+        String path = req.getServletContext().getRealPath("files/papers");
         targetFilePath = new File(path, originalFileName);
         if (!targetFilePath.exists()) {
             targetFilePath.getParentFile().mkdirs();
@@ -136,6 +145,5 @@ public class ExamServiceImpl implements ExamService {
     public String upSubmitStudent(String stu_id, String stu_exam) {
         return examMapper.upSubmitStudent(stu_id, stu_exam);
     }
-
 
 }
