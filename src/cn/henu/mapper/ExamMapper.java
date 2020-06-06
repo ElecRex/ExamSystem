@@ -2,6 +2,7 @@ package cn.henu.mapper;
 
 import java.util.List;
 
+import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.Update;
@@ -26,6 +27,9 @@ public interface ExamMapper {
 	@Update("update exam set e_clear=1 where e_name=#{e_name}")
 	int updClearExam(String e_name);
 
+	@Delete("delete from student where stu_exam=#{e_name}")
+	int delClearExam(String e_name);
+
 	@Select("select * from exam where e_isend=0 and e_isstart=1")
 	List<Exam> selStartExam();
 
@@ -46,5 +50,7 @@ public interface ExamMapper {
 
 	@Select("update student set stu_submit=1 where stu_id=#{param1} and stu_exam=#{param2}")
 	String upSubmitStudent(String stu_id, String stu_exam);
+
+
 
 }
