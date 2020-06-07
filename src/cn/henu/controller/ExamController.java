@@ -129,15 +129,16 @@ public class ExamController {
         int index = examServiceImpl.updClearExam(name);
         int clear = examService.delClearExam(name);
         if (index >= 1) {
-            deleteUploadFiles(name, request); //清除当前考试考生上传的试卷
-            deleteUploadFiles("papers", request); //清除老师上传的试卷
-            deleteUploadFiles("studentExcel", request); //清除老师上传的考生名单
+            deleteTeachFiles("papers", request); //清除老师上传的试卷
+            deleteTeachFiles("studentExcel", request); //清除老师上传的考生名单
+            deleteStuFiles(name, request); //清除当前考试考生上传的试卷
             System.out.println("考试清理成功");
         } else {
             System.out.println("考试清理失败");
         }
     }
-    private void deleteUploadFiles(String fileName, HttpServletRequest request){
+    //清除学生端上传试卷
+    private void deleteStuFiles(String fileName, HttpServletRequest request){
         String savePath = request.getServletContext().getRealPath("files/" + fileName);
         File file = new File(savePath);
         // 判断上传文件的保存目录是否存在
@@ -146,15 +147,40 @@ public class ExamController {
                 file.delete();// 删除文件
             }
             if (file.isDirectory()) {// 否则如果它是一个目录
-                File[] files = file.listFiles();// 声明目录下所有的文件 files[];
-                for (int i = 0; i < files.length; i++) {// 遍历目录下所有的文件
-                    boolean b = files[i].delete();// 把每个文件用这个方法进行迭代
-                    System.out.println(files[i].getName() + ": " + b);
+                File[] subDirs = file.listFiles();// 声明考试目录下所有学号子目录;
+                for (int i = 0; i < subDirs.length; i++) {// 遍历学号子目录
+                    File[] files = subDirs[i].listFiles();
+                    for(int j=0; j<files.length; j++){  //遍历该学号下提交的试卷
+                        boolean b = files[j].delete(); //删除每张提交试卷
+                        System.out.println("***删除试卷：" + files[j].getName() + ": " + b);
+                    }
+                    boolean s = subDirs[i].delete(); //删除学号子目录
+                    System.out.println("---删除学号子目录：" + subDirs[i].getName() + ": " + s);
                 }
-                System.out.println("-----" + file.getName());
-                file.delete();// 删除文件夹
+                boolean t =  file.delete();// 删除考试文件夹
+                System.out.println("---删除考试目录：" + file.getName() + ": " + t);
             }
-        } else { System.out.println("需要删除的文件目录-" + fileName + "-不存在！"); }
+        } else { System.out.println("需要删除的文件目录-" + fileName + "不存在！"); }
+    }
+    //清除教师端上传文件
+    private void deleteTeachFiles(String fileName, HttpServletRequest request){
+        String savePath = request.getServletContext().getRealPath("files/" + fileName);
+        File file = new File(savePath);
+        // 判断上传文件的保存目录是否存在
+        if (file.exists()) {// 判断文件是否存在
+            if (file.isFile()) {// 判断是否是文件
+                file.delete();// 删除文件
+            }
+            if (file.isDirectory()) {// 否则如果它是一个目录
+                File[] files = file.listFiles();
+                for(int i=0; i<files.length; i++) {  //遍历该子目录下的文件
+                    boolean b = files[i].delete(); //删除每个文件
+                    System.out.println("---删除文件" + files[i].getName() + ": " + b);
+                }
+                boolean a = file.delete();// 删除子文件夹
+                System.out.println("---删除文件夹" + file.getName() + ": " + a);
+            }
+        } else { System.out.println("需要删除的文件目录-" + fileName + "不存在！"); }
     }
 
     @RequestMapping("getAllExams")

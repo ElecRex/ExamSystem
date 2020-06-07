@@ -201,7 +201,7 @@ public class TeacherController {
     @RequestMapping("teacherDownload")
     public String teacherDownload(String e_name, HttpServletRequest req, HttpServletResponse res, HttpSession session) {
         String savePath = req.getServletContext().getRealPath("files/" + e_name);
-        String zipFilePath = req.getServletContext().getRealPath("files/" + e_name);
+        String zipFilePath = req.getServletContext().getRealPath("files/papers");
         System.out.println("---试卷压缩包的保存路径为：" + savePath);
         boolean flag = ZipHelper.toZip(savePath, zipFilePath, e_name);
         if(flag) {
@@ -212,7 +212,7 @@ public class TeacherController {
         //浏览器下载zip文件
         try{
             ServletOutputStream os = res.getOutputStream();
-            File file = new File(req.getServletContext().getRealPath("files/" + e_name), e_name+".zip");
+            File file = new File(req.getServletContext().getRealPath("files/papers"), e_name+".zip");
             byte[] bytes = FileUtils.readFileToByteArray(file);
             os.write(bytes);
             os.flush();
