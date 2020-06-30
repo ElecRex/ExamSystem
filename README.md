@@ -1,4 +1,5 @@
 # 在线上机考试管理系统功能介绍
+![License](https://img.shields.io/github/license/ElecRex/ExamSystem.svg)
 
 - 该系统的主要目标是通过绑定ip地址的方式控制学生登录，从而保证参加考试的学生必须独立完成并提交程序，杜绝代别人提交的情况。
   
